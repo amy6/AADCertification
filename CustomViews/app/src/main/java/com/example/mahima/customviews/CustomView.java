@@ -1,6 +1,7 @@
 package com.example.mahima.customviews;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -16,6 +17,7 @@ public class CustomView extends View {
 
     private Rect rect;
     private Paint paint;
+    private int squareColor;
 
     public CustomView(Context context) {
         super(context);
@@ -41,6 +43,13 @@ public class CustomView extends View {
     private void init(@Nullable AttributeSet attrs) {
         rect = new Rect();
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
+        if (attrs == null) return;
+
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CustomView);
+        squareColor = typedArray.getColor(R.styleable.CustomView_square_color, Color.LTGRAY);
+        paint.setColor(squareColor);
+        typedArray.recycle();
     }
 
     @Override
@@ -51,8 +60,6 @@ public class CustomView extends View {
         rect.right = getWidth();
         rect.top = 0;
         rect.bottom = getHeight();
-
-        paint.setColor(Color.LTGRAY);
 
         canvas.drawRect(rect, paint);
     }
