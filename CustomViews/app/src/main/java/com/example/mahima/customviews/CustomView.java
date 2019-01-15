@@ -18,6 +18,7 @@ public class CustomView extends View {
     private Rect rect;
     private Paint paint;
     private int squareColor;
+    private int padding;
 
     public CustomView(Context context) {
         super(context);
@@ -52,14 +53,29 @@ public class CustomView extends View {
         typedArray.recycle();
     }
 
+    public void swapColor() {
+        paint.setColor(paint.getColor() == squareColor ? Color.GREEN : squareColor);
+        postInvalidate();
+    }
+
+    public void paddingIncrease(int padding) {
+        this.padding += padding;
+        postInvalidate();
+    }
+
+    public void paddingDecrease(int padding) {
+        this.padding -= padding;
+        postInvalidate();
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        rect.left = 0;
-        rect.right = getWidth();
-        rect.top = 0;
-        rect.bottom = getHeight();
+        rect.left = padding;
+        rect.right = getWidth() - padding;
+        rect.top = padding;
+        rect.bottom = getHeight() - padding;
 
         canvas.drawRect(rect, paint);
     }
