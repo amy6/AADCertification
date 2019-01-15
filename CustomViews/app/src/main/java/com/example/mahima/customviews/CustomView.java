@@ -14,6 +14,9 @@ import android.view.View;
 public class CustomView extends View {
 
 
+    private Rect rect;
+    private Paint paint;
+
     public CustomView(Context context) {
         super(context);
         init(null);
@@ -36,20 +39,19 @@ public class CustomView extends View {
     }
 
     private void init(@Nullable AttributeSet attrs) {
-
+        rect = new Rect();
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        Rect rect = new Rect();
         rect.left = 0;
         rect.right = getWidth();
         rect.top = 0;
         rect.bottom = getHeight();
 
-        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.LTGRAY);
 
         canvas.drawRect(rect, paint);
