@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Notify Me</string>
+    <string name="click_to_notify">Click to notify</string>
+</resources>
