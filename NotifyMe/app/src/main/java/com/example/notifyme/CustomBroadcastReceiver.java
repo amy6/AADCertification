@@ -9,23 +9,28 @@ import android.util.Log;
 
 public class CustomBroadcastReceiver extends BroadcastReceiver {
 
-    private String extraString;
-
     @Override public void onReceive(Context context, Intent intent) {
         if (intent != null) {
             if (intent.getAction() != null) {
                 if (intent.getAction().equals(MainActivity.ACTION_SNOOZE)) {
                     if (intent.hasExtra(MainActivity.EXTRA_STRING)) {
-                        extraString = intent.getStringExtra(MainActivity.EXTRA_STRING);
+                        String extraString = intent.getStringExtra(MainActivity.EXTRA_STRING);
+                        Log.i(MainActivity.TAG, "Broadcast receiver has processed the request. " + extraString + " says HI!!");
+                        updateNotification(context);
+
+                        startService(context);
                     }
+                } else if (intent.getAction().equals(MainActivity.ACTION_CANCEL)) {
+                    Log.i(MainActivity.TAG, "Broadcast receiver has processed the request. Notification has been cancelled.");
+
+                    cancelNotification(context);
                 }
             }
         }
+    }
 
-        Log.i(MainActivity.TAG, "Broadcast receiver has processed the request. " + extraString + " says HI!!");
-        updateNotification(context);
-
-        startService(context);
+    private void cancelNotification(Context context) {
+        NotificationManagerCompat.from(context).cancel(MainActivity.NOTIFICATION_ID);
     }
 
     private void updateNotification(Context context) {

@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String TAG = MainActivity.class.getSimpleName();
 
     public static final String ACTION_SNOOZE = "snooze-action";
+    public static final String ACTION_CANCEL = "cancel-action";
     public static final String EXTRA_STRING = "extra-string";
     public static final String NOTIFICATION_CHANNEL_ID = "default-notification-channel";
 
@@ -45,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
             notificationChannel.setLightColor(android.R.color.holo_purple);
             notificationChannel.enableLights(true);
             notificationChannel.enableVibration(true);
+            notificationChannel.setDescription("Default notification settings");
             notificationManager.createNotificationChannel(notificationChannel);
         }
 
@@ -55,18 +57,27 @@ public class MainActivity extends AppCompatActivity {
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
                 .setStyle(createNotificationStyle())
-                .addAction(createAction())
+                .addAction(createSnoozeAction())
+                .addAction(createCancelAction())
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setContentIntent(createPendingIntent());
 
         NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, builder.build());
     }
 
-    private NotificationCompat.Action createAction() {
+    private NotificationCompat.Action createSnoozeAction() {
         Intent intent = new Intent(this, CustomBroadcastReceiver.class);
         intent.setAction(ACTION_SNOOZE);
         intent.putExtra(EXTRA_STRING, "Harry");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         return new NotificationCompat.Action(R.drawable.ic_android, "Snooze", pendingIntent);
+    }
+
+    private NotificationCompat.Action createCancelAction() {
+        Intent intent = new Intent(this, CustomBroadcastReceiver.class);
+        intent.setAction(ACTION_CANCEL);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, REQUEST_CODE, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return new NotificationCompat.Action(R.drawable.ic_cancel, "Cancel", pendingIntent);
     }
 
     private NotificationCompat.Style createNotificationStyle() {
