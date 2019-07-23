@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -17,9 +18,9 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String ACTION_SNOOZE = "snooze-action";
     public static final String EXTRA_STRING = "extra-string";
-    private static final String NOTIFICATION_CHANNEL_ID = "default-notification-channel";
+    public static final String NOTIFICATION_CHANNEL_ID = "default-notification-channel";
 
-    private static final int NOTIFICATION_ID = 123;
+    public static final int NOTIFICATION_ID = 123;
     private static final int REQUEST_CODE = 666;
 
     @Override
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                 .addAction(createAction())
                 .setContentIntent(createPendingIntent());
 
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
+        NotificationManagerCompat.from(this).notify(NOTIFICATION_ID, builder.build());
     }
 
     private NotificationCompat.Action createAction() {
